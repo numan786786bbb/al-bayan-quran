@@ -34,9 +34,16 @@ allprojects {
             // Android JSC is installed from npm
             url(new File(['node', '--print', "require.resolve('jsc-android/package.json')"].execute(null, rootDir).text.trim(), '../dist'))
         }
-
         google()
         mavenCentral()
         maven { url 'https://www.jitpack.io' }
+        maven { url "https://maven.google.com" }
+    }
+    configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.google.android' && details.requested.name == 'cameraview') {
+                details.useVersion '1.0.0-alpha3'
+            }
+        }
     }
 }
